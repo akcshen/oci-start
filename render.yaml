@@ -1,0 +1,14 @@
+services:
+  - type: worker
+    name: oci-start
+    env: docker
+    plan: free
+    buildCommand: |
+      apt-get update && apt-get install -y default-jdk wget
+      mkdir -p oci-start && cd oci-start
+      wget -O oci-start.sh https://raw.githubusercontent.com/doubleDimple/shell-tools/master/oci-start.sh
+      chmod +x oci-start.sh
+    startCommand: ./oci-start.sh start
+    envVars:
+      - key: JAVA_HOME
+        value: /usr/lib/jvm/default-java 
