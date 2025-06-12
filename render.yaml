@@ -8,7 +8,11 @@ services:
       mkdir -p oci-start && cd oci-start
       wget -O oci-start.sh https://raw.githubusercontent.com/doubleDimple/shell-tools/master/oci-start.sh
       chmod +x oci-start.sh
-    startCommand: ./oci-start.sh start
+    startCommand: |
+      cd oci-start
+      trap 'echo "Stopping service..."; ./oci-start.sh stop; exit 0' SIGTERM SIGINT
+      ./oci-start.sh start
+      tail -f /dev/null
     envVars:
       - key: JAVA_HOME
         value: /usr/lib/jvm/default-java 
